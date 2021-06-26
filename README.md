@@ -20,6 +20,7 @@
 3. 进入到 server/php/ 目录， 使用php命令发送模拟数据
    `php push.php test '您好，Node'`
 
+![](https://pek3b.qingstor.com/hexo-blog/hexo-blog/20210626142510.png)
 
 ## 参考
 
