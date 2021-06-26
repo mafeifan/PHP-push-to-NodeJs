@@ -12,15 +12,14 @@ const path = require('path')
 let httpServer = require('http').createServer(app);
 let io = require('socket.io')(httpServer);
 
-let host = '127.0.0.1';
-let port = 6379;
-//监听redis消息队列, 获取服务端需要传递给客户端的数据
+let httpPort = 3001;
+// 监听Redis消息队列, 获取服务端需要传递给客户端的数据
 let redis = require("redis");
-let subscriber = redis.createClient(port, host);
-//定义全局的对象, 频道名作为key对应该频道客户端的监听事件 channels[channelName] = receiveEvent
+let subscriber = redis.createClient(6379, '127.0.0.1');
+// 定义全局的对象, 频道名作为key对应该频道客户端的监听事件 channels[channelName] = receiveEvent
 let channels = {}
 
-//建立连接
+// 建立连接
 io.on('connection', function (socket) {
   console.log('public channel connected sid-->>' + socket.id);
   //监听join事件
@@ -30,17 +29,17 @@ io.on('connection', function (socket) {
     subscriber.subscribe(data.channelName);
     channels[data.channelName] = data.receive;
   });
-  //监听leave事件
+  // 监听leave事件
   socket.on('leave', function (roomName) {
     socket.leave(roomName);
   });
-  //断开连接
+  // 断开连接
   socket.on('disconnect', function () {
     console.log(`disconnect`);
   });
 });
 
-//监听redis消息队列
+// 监听Redis消息队列
 subscriber.on("message", function (channel, message) {
   io.to(channel).emit(channels[channel], message);
 });
@@ -48,6 +47,6 @@ subscriber.on("message", function (channel, message) {
 app.use(express.static(path.join(__dirname, 'public')))
 
 // 启动监听端口
-httpServer.listen(3001, function () {
-  console.log('websocket server listening on *:3001');
+httpServer.listen(httpPort, function () {
+  console.log(`websocket server listening on *:${httpPort}`);
 });

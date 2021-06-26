@@ -1,6 +1,6 @@
 <?php
-    $channel = isset($argv[1]) ? $argv[1] : '';
-    $message = isset($argv[2]) ? $argv[2] : '';
+    $message = isset($argv[1]) ? $argv[1] : '';
+    $channel = 'channelName1';
 
     if ($channel == '' || $message == '') {
       echo "Error: Channel or message value not null" . PHP_EOL;
@@ -16,5 +16,5 @@
       echo "Error: redis connect failed" . PHP_EOL;
       exit;
     }
-
+    // 往消息队列发送消息
     $redis->publish($channel, $message);

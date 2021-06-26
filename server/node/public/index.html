@@ -14,18 +14,21 @@
 <div id="content"></div>
 <script type="text/javascript">
   let wsHost = 'http://127.0.0.1:3001';
-  //建立websocket连接 ---
+  // 建立websocket连接 ---
   let socket = io.connect(wsHost);
   // 频道名 和 接收消息方法声明
   let sub = {}
-  sub.channelName = 'test';
+  sub.channelName = 'channelName1';
   sub.receive = 'receive_function';
-  //订阅加入频道
+  // 订阅加入频道
   socket.emit('join', sub);
-  //监听消息处理
+  // 监听消息处理
   socket.on(sub.receive, function (result) {
     console.log(result);
-    document.querySelector('#content').innerHTML = result;
+    let para = document.createElement('p');
+    let node = document.createTextNode(result);
+    para.appendChild(node);
+    document.querySelector('#content').appendChild(para);
   });
 </script>
 </body>
