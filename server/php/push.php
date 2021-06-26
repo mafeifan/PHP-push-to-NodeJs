@@ -1,5 +1,4 @@
 <?php
-
     $channel = isset($argv[1]) ? $argv[1] : '';
     $message = isset($argv[2]) ? $argv[2] : '';
 
@@ -14,12 +13,8 @@
     try {
       $redis->connect($host, $port);
     } catch (\Exception $e) {
-      echo "Error: redis connet failed" . PHP_EOL;
+      echo "Error: redis connect failed" . PHP_EOL;
       exit;
     }
 
     $redis->publish($channel, $message);
-
-
-
- ?>
